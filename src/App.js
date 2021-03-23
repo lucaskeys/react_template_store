@@ -5,24 +5,42 @@ import { createBrowserHistory } from 'history';
 import ShopPage from './pages/shop/ShopComponent'
 import SignInSignUp from './pages/sign-in-sign-up/SignInSignUp'
 import Header from './components/header/Header'
+import { auth } from './components/firebase/FirebaseConfig'
 import './App.css';
 
-function App() {
+class App extends React.Component {
 
-  const customHistory = createBrowserHistory();
+  state = {
+    currentUser: null
+  }
 
-  return (
-    <div>
-      <Header/>
-      <Router history={customHistory}>
-        <Switch>
-        <Route exact path="/" component={Homepage} />
-        <Route path="/shop" component={ShopPage} />
-        <Route path="/sign-in" component={SignInSignUp} />
-        </Switch>
-      </Router>
-    </div>
-  );
+  componentDidMount() {
+    auth.onAuthStateChanged(user => {
+      this.setState({
+        currentUser: user
+      })
+
+      console.log(user)
+    })
+  }
+
+  render() {
+
+    const customHistory = createBrowserHistory();
+
+    return (
+      <div>
+        <Header/>
+        <Router history={customHistory}>
+          <Switch>
+          <Route exact path="/" component={Homepage} />
+          <Route path="/shop" component={ShopPage} />
+          <Route path="/sign-in" component={SignInSignUp} />
+          </Switch>
+        </Router>
+      </div>
+    );
+  }
 }
 
 export default App;
