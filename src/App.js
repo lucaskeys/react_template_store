@@ -2,15 +2,8 @@ import React from 'react';
 import Homepage from './pages/homepage/Homepage'
 import { Router, Switch, Route } from 'react-router-dom'
 import { createBrowserHistory } from 'history';
+import ShopPage from './pages/shop/ShopComponent'
 import './App.css';
-
-const HatsPage = () => {
-  return (
-    <div>
-      <h1>Hat</h1>
-    </div>
-  )
-}
 
 function App() {
 
@@ -21,7 +14,7 @@ function App() {
       <Router history={customHistory}>
         <Switch>
         <Route exact path="/" component={Homepage} />
-        <Route path="/hats" component={HatsPage} />
+        <Route path="/shop" component={ShopPage} />
         </Switch>
       </Router>
     </div>
