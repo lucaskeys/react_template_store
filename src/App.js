@@ -1,7 +1,7 @@
 import React from 'react';
 import Homepage from './pages/homepage/Homepage'
-import { Router, Switch, Route } from 'react-router-dom'
-import { createBrowserHistory } from 'history';
+import { Switch, Route } from 'react-router-dom'
+// import { createBrowserHistory } from 'history';
 import ShopPage from './pages/shop/ShopComponent'
 import SignInSignUp from './pages/sign-in-sign-up/SignInSignUp'
 import Header from './components/header/Header'
@@ -14,8 +14,10 @@ class App extends React.Component {
     currentUser: null
   }
 
+  unsubscribeFromAuth = null;
+
   componentDidMount() {
-    auth.onAuthStateChanged(user => {
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
       this.setState({
         currentUser: user
       })
@@ -24,20 +26,22 @@ class App extends React.Component {
     })
   }
 
+  componentWillUnmount() {
+    this.unsubscribeFromAuth();
+  }
+
   render() {
 
-    const customHistory = createBrowserHistory();
+    // const customHistory = createBrowserHistory();
 
     return (
       <div>
-        <Header/>
-        <Router history={customHistory}>
+        <Header currentUser={this.state.currentUser} />
           <Switch>
           <Route exact path="/" component={Homepage} />
-          <Route path="/shop" component={ShopPage} />
-          <Route path="/sign-in" component={SignInSignUp} />
+          <Route exact path="/shop" component={ShopPage} />
+          <Route exact path="/sign-in" component={SignInSignUp} />
           </Switch>
-        </Router>
       </div>
     );
   }
