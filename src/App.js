@@ -5,7 +5,7 @@ import { Switch, Route } from 'react-router-dom'
 import ShopPage from './pages/shop/ShopComponent'
 import SignInSignUp from './pages/sign-in-sign-up/SignInSignUp'
 import Header from './components/header/Header'
-import { auth, createUserProfileDocument } from './components/firebase/FirebaseConfig'
+import { auth, createUserProfileDocument } from './firebase/FirebaseConfig'
 import './App.css';
 
 class App extends React.Component {
@@ -27,10 +27,9 @@ class App extends React.Component {
               id: snapShot.id,
               ...snapShot.data()
             }
-          }, () => {
-            console.log(this.state)
-          })
-        })
+          });
+          console.log(this.state)
+        });
       }
       this.setState({
         currentUser: userAuth
