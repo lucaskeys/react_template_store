@@ -12,9 +12,9 @@ export const selectCollections = createSelector(
 export const selectCollectionsForPreview = createSelector(
   [selectCollections],
   collections => {
-    return Object.keys(collections).map(key => {
+    return collections ? Object.keys(collections).map(key => {
       return collections[key]
-    })
+    }) : []
   }
 )
 
@@ -23,6 +23,6 @@ export const selectCollection = memoize((collectionUrlParam) => {
   return createSelector(
     [selectCollections],
        // The collectionUrlParam argument is the string value we are passing in from the collection and using that to find the key - collection returns "hats" so COLLECTION_ID['HATS'] = 1
-    collections => collections[collectionUrlParam]
+    collections => collections ? collections[collectionUrlParam] : null
     )
   })
