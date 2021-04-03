@@ -14,7 +14,7 @@ import { auth, createUserProfileDocument, addCollectionAndDocuments } from './fi
 
 import { setCurrentUser } from './redux/user/userActions'
 import { selectCurrentUser } from './redux/user/user.selectors'
-import { selectCollectionsForPreview } from './redux/shop/shop.selectors'
+// import { selectCollectionsForPreview } from './redux/shop/shop.selectors'
 
 import './App.css';
 

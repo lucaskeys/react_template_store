@@ -29,14 +29,28 @@ class ShopPage extends React.Component {
     const collectionRef = firestore.collection('collections');
 
     // this will send us the snapshot of our collections array
-
     // this is what gets our shop data from firebase and converts it to an array of objects
-    this.unsubscribeFromSnapshot = collectionRef.onSnapshot(async snapshot => {
-      const collectionsMap = convertCollectionsSnapshotToMap(snapshot)
+    // Observeable pattern - return an observeable style objects - onSnapshot is the stream style of observable pattern it provides
+    // this.unsubscribeFromSnapshot = collectionRef.onSnapshot(async snapshot => {
+    //   const collectionsMap = convertCollectionsSnapshotToMap(snapshot)
+    //   // then we update our shop reducer
+    //   updateCollections(collectionsMap);
+    //   this.setState({ loading: false })
+    // }) 
+
+    // method using native fetch to reach API endpoint 
+    // fetch('https://firestore.googleapis.com/v1/projects/crwn-db-679c5/databases/(default)/documents/collections')
+    // .then(response => {
+    //   return response.json()
+    // }).then(collections => console.log(collections))
+
+    // Promise-based pattern .get() makes an api call to fetch back the data associated with the collection - the difference is we call a .then() because it is a promise based pattern - now we are doing auth API calls utilizing the promise chain style
+    collectionRef.get().then(snapshot => {
+       const collectionsMap = convertCollectionsSnapshotToMap(snapshot)
       // then we update our shop reducer
       updateCollections(collectionsMap);
       this.setState({ loading: false })
-    }) 
+    })
   }
 
   render() {
