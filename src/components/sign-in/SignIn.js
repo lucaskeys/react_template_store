@@ -74,7 +74,7 @@ handleChange = (event) => {
 
         <div className="buttons">
           <CustomButton type="submit">SIGN IN</CustomButton>
-  
+          {/* need the type button else because the button is part of the form element, it will auto trigger an onSubmit  */}
           <CustomButton type="button" onClick={googleSignInStart} isGoogleSignIn>SIGN IN WITH GOOGLE</CustomButton>
         </div>
         </form>

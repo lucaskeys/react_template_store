@@ -8,14 +8,16 @@ const CollectionPreview = ({title, items, match, routeName, history, id}) => {
   console.log('CollectionsPreview other props HERE!',)
 
   const renderCollection = () => {
-   
+    // return items.filter((item, index) => index < 4).map(item => {
       return items.filter((item, index) => index < 4).map((item) => {
       return (
+        // <CollectionItem key={item.id} name={item.name} price={item.price} imageUrl={item.imageUrl}/>
 
         <CollectionItem key={item.id}  item={item} />
       )
     })
   }
+
 
   return(
     <div className="collection-preview">
