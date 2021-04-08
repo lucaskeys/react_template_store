@@ -10,9 +10,7 @@ import Checkout from './pages/checkout/Checkout'
 
 import Header from './components/header/Header'
 
-import { auth, createUserProfileDocument, addCollectionAndDocuments } from './firebase/FirebaseConfig'
 
-import { setCurrentUser } from './redux/user/userActions'
 import { selectCurrentUser } from './redux/user/user.selectors'
 // import { selectCollectionsForPreview } from './redux/shop/shop.selectors'
 
@@ -22,29 +20,28 @@ class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    // const { collectionsArray } = this.props;
     const {setCurrentUser} = this.props;
 
-    // auth comes from firebase - auth library - give the userAuth object and listen to all all the userAuth objects that onAuthStateChange will give us - this userAuth object is stored in the firestore user auth database table - authentication stores user info when they login/sign in - this userAuth contains the UID assigned via firebase
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-      if(userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
+    // const { collectionsArray } = this.props;
 
-          //  this onSnapshot method is coming from our firebase config - createUserProfileDocument function
-          // onSnapShot is a listener that listens for whenver the snapshot changes - whenever the document.snapshot object updates - it will pass the snapshot into the listener - then call the setCurrentUser action creator method to set the current user object in redux reducer
-        userRef.onSnapshot(snapShot => {
-          setCurrentUser({
-            id: snapShot.id,
-              ...snapShot.data()
-          })
-        });
-      }
-      setCurrentUser(userAuth)
-      //  we are doing collections.array.map to map over the array to generate a new one without the link or id properties in our colelctions because we want firestore to generate those for us
+    // this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+    //   if(userAuth) {
+    //     const userRef = await createUserProfileDocument(userAuth);
 
-       // this is having to do with populating the firesotre but we only want to do this one time, so commenting out the code so it doesnt run again
-      // addCollectionAndDocuments('collections', collectionsArray.map(({title, items}) => ({title, items})))
-    })
+    //     creator method to set the current user object in redux reducer
+    //     userRef.onSnapshot(snapShot => {
+    //       setCurrentUser({
+    //         id: snapShot.id,
+    //           ...snapShot.data()
+    //       })
+    //     });
+    //   }
+    //   setCurrentUser(userAuth)
+    //   //  we are doing collections.array.map to map over the array to generate a new one without the link or id properties in our colelctions because we want firestore to generate those for us
+
+    //    // this is having to do with populating the firesotre 
+    //   // addCollectionAndDocuments('collections', collectionsArray.map(({title, items}) => ({title, items})))
+    // })
   };
 
   componentWillUnmount() {
@@ -69,14 +66,8 @@ class App extends React.Component {
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser
 
-  // this is having to do with populating the firesotre but we only want to do this one time, so commenting out the code so it doesnt run again
-  // collectionsArray: selectCollectionsForPreview
 })
 
-const mapDispatchToProps = dispatch => {
-  return {
-    setCurrentUser: (user) => dispatch(setCurrentUser(user))
-  }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+export default connect(mapStateToProps, null)(App);

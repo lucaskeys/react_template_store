@@ -27,7 +27,7 @@ const Header = ({currentUser, hidden}) => {
       </LogoContainer>
       <OptionsContainer>
       <OptionLink to="/shop">SHOP</OptionLink>
-      {/* can change the type of component tag to any HTML tag */}
+
       <OptionLink to="/contact">CONTACT</OptionLink>
       {
         currentUser ? 

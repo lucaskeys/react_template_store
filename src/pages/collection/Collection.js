@@ -6,6 +6,7 @@ import './Collection.scss'
 
 const CollectionPage = ({ collection }) => {
   const { title, items } = collection;
+  console.log("collection Page props from route!", {collection})
 
   return(
     <div className="collection-page">
@@ -21,10 +22,11 @@ const CollectionPage = ({ collection }) => {
   )
 }
 
-// state - overall reducer state from the top, and second arg is the ownProps -which is the props of our component being wrapped into our connect which is also URL params
+
 const mapStateToProps = (state, ownProps) => {
+  console.log(ownProps)
   return {
-    // adding (state) is necessary because unlike other selectors, this selector needs part of the state depending on the URL parameter - ownProps route is coming from the route params we passed in on the shop page route 
+
     collection: selectCollection(ownProps.match.params.collectionId)(state)
   }
 }

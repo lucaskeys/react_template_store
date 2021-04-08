@@ -1,16 +1,16 @@
 import React from 'react';
-
 import CollectionItem from '../collection-item/CollectionItem'
-
+import { withRouter } from 'react-router-dom'
 import './CollectionPreview.scss'
 
-const CollectionPreview = ({title, items}) => {
+const CollectionPreview = ({title, items, match, routeName, history, id}) => {
+
+  console.log('CollectionsPreview other props HERE!',)
 
   const renderCollection = () => {
-    // return items.filter((item, index) => index < 4).map(item => {
+   
       return items.filter((item, index) => index < 4).map((item) => {
       return (
-        // <CollectionItem key={item.id} name={item.name} price={item.price} imageUrl={item.imageUrl}/>
 
         <CollectionItem key={item.id}  item={item} />
       )
@@ -19,7 +19,7 @@ const CollectionPreview = ({title, items}) => {
 
   return(
     <div className="collection-preview">
-      <h1 className="title">{title.toUpperCase()}</h1>
+      <h1 className="title" onClick={() => history.push(`${match.url}/${routeName}`)}>{title.toUpperCase()}</h1>
       <div className="preview">
         {renderCollection()}
       </div>
@@ -27,4 +27,5 @@ const CollectionPreview = ({title, items}) => {
   )
 }
 
-export default CollectionPreview;
+
+export default withRouter(CollectionPreview);
