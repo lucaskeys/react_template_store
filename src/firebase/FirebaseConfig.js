@@ -12,6 +12,7 @@ const config = {
 };
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
+  // additionalData is the displayname coming in from signup or an auto generated one via google sign in - this gets spread into our set at userRef.set
   if(!userAuth) {
     return;
   }

@@ -3,12 +3,14 @@ import { takeLatest, put, all, call } from 'redux-saga/effects';
 import userTypes from './userTypes'
 
 import { auth, googleProvider, createUserProfileDocument, getCurrentUser } from '../../firebase/FirebaseConfig'
-import { signInSuccess, signInFailure, signOutSuccess, signOutFailure } from './userActions'
+import { signInSuccess, signInFailure, signOutSuccess, signOutFailure, signUpSuccess, signUpFailure } from './userActions'
 
-export function* getSnapshotFromUserAuth(userAuth) {
+// Firebase utilis createUserProfileDocument - it does take an OPTIONAL second parameter of additionalData - where we spread in the additionalData object into the userRef.set
+export function* getSnapshotFromUserAuth(userAuth, additionalData) {
     // wrapping our attempt at an api call inside of a try block
     try {
-      const userRef = yield call(createUserProfileDocument, userAuth)
+      // Firebase utilis createUserProfileDocument happening here -if additionalData is undefined, we will just spread nothing in in our firebase meth
+      const userRef = yield call(createUserProfileDocument, userAuth, additionalData)
       const userSnapshot = yield userRef.get()
       // put(), puts things back into our regular redux flow
       // This will update our user reducer with the object we are passing as a payload
@@ -72,8 +74,25 @@ export function* signOut() {
     yield auth.signOut();
     yield put(signOutSuccess())
   } catch(error) {
-    yield put(signInFailure(error))
+    yield put(signOutFailure(error))
   }
+}
+
+export function* signUpNewUser({payload: {displayName, email, password }}) {
+  try {
+
+    const { user } = yield auth.createUserWithEmailAndPassword(email, password)
+    // we pluck off the user using this method, but we destructure the payload to just get the properties above
+
+    // the displayName is the additional data that is being set inside of our firebase createProfilDoc function in firebasecongif - signUpSuccess is passing in an object because that is what we are expecting to recieve an object in our userActions signUpSuccess action creator
+    yield put(signUpSuccess({user, additionalData: {displayName}}))
+  } catch (error) {
+    yield put(signUpFailure(error))
+  }
+}
+
+export function* signInAfterSignUp({payload: {user, additionalData}}) {
+  yield getSnapshotFromUserAuth(user, additionalData)
 }
 
 export function* checkUserSessionStart() {
@@ -95,11 +114,21 @@ export function*  onGoogleSignInStart() {
   yield takeLatest(userTypes.GOOGLE_SIGN_IN_START, signInWithGoogle)
 }
 
+export function* signUpStart() {
+  yield takeLatest(userTypes.SIGN_UP_START, signUpNewUser)
+}
+
+export function* onSignUpSuccess() {
+  yield takeLatest(userTypes.SIGN_UP_SUCCESS, signInAfterSignUp)
+}
+
 export function* userSagas() {
   yield all([
     call(onGoogleSignInStart),
     call(onEmailSignInStart),
     call(checkUserSessionStart),
-    call(onSignOutStart)
+    call(onSignOutStart),
+    call(signUpStart),
+    call(onSignUpSuccess)
   ])
 }
