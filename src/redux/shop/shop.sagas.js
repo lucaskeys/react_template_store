@@ -1,7 +1,7 @@
 // comes from effect library in redux and listens for every action of a specific type we pass in to it
 //  call is the effect inside the gen function that invokes the method
 // put is the saga effect for creating actions - exactly like dispatch but we have to yield it
-import { takeEvery, call, put } from 'redux-saga/effects' 
+import { takeEvery, call, put, all } from 'redux-saga/effects' 
 import shopActionTypes from './shopTypes'
 
 import { firestore, convertCollectionsSnapshotToMap } from '../../firebase/FirebaseConfig'
@@ -40,7 +40,12 @@ export function* fetchCollectionsAsync() {
 export function* fetchCollectionsStart() {
   // Second param is a generator function that will run in response to the takeEvery listener
   yield takeEvery(
-    shopActionTypes.FETCH_COLLECTIONS_START, 
-    fetchCollectionsAsync
+    shopActionTypes.FETCH_COLLECTIONS_START, fetchCollectionsAsync
     );
 }
+
+export function* shopSagas() {
+  yield all([
+    call(fetchCollectionsStart)
+  ])
+} 
