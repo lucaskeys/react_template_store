@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import FormInput from '../form-input/FormInput'
 import CustomButton from '../custom-button/CustomButton'
 import { connect } from 'react-redux'
@@ -9,20 +9,19 @@ import { googleSignInStart, emailSignInStart } from '../../redux/user/userAction
 
 import './SignIn.scss' 
 
-class SignIn extends React.Component {
+const SignIn = ({emailSignInStart, googleSignInStart}) => {
 
-state = {
-  email: '',
-  password: ''
-}
+const [ userCredentials, setCredentials ] = useState({email: '', password: ''})
 
-handleSubmit = async (event) => {
+const { email, password } = userCredentials;
+
+const handleSubmit = async (event) => {
   event.preventDefault();
-  const { emailSignInStart } = this.props
-  const { email, password } = this.state;
 
+  // can destructure a useState object 
 
-    emailSignInStart(email, password)
+  emailSignInStart(email, password)
+
   // No more setState - redux will handle the state with Saga from now on
   // try {
   //   await auth.signInWithEmailAndPassword(email, password);
@@ -33,33 +32,28 @@ handleSubmit = async (event) => {
   // } catch (error) {
   //   console.log(error)
   // }
-
 }
 
-handleChange = (event) => {
+const handleChange = (event) => {
   const {value, name} = event.target;
 
-  this.setState({
-    [name]: value
+  setCredentials({
+    ...userCredentials, [name]: value
   })
 }
-
-  render() {
-
-    const { googleSignInStart } = this.props
 
     return (
       <div className="sign-in"> 
         <h2>I already have an account</h2>
         <span>Sign in with your email and password</span>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={handleSubmit}>
 
           <FormInput 
           name="email" 
           type="email" 
           label="email"
-          value={this.state.email} 
-          handleChange={this.handleChange}  
+          value={email} 
+          handleChange={handleChange}  
           required 
           />
 
@@ -67,8 +61,8 @@ handleChange = (event) => {
           name="password" 
           type="password" 
           label="password"
-          value={this.state.password} 
-          handleChange={this.handleChange} 
+          value={password} 
+          handleChange={handleChange} 
           required 
           />
 
@@ -80,7 +74,6 @@ handleChange = (event) => {
         </form>
       </div>
     )
-  }
 }
 
 const mapDispatchToProps = dispatch => {
