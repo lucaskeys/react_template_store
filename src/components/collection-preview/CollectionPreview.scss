@@ -15,5 +15,17 @@
   .preview {
     display: flex;
     justify-content: space-between;
+
+    @media screen and (max-width: 800px) {
+      display: grid;
+      // fr is whatever space thats left in this screen
+      grid-template-columns: 1fr 1fr;
+      // spacing between elements
+      grid-gap: 15px;
+    }
+  }
+
+  @media screen and (max-width: 800px) {
+    align-items: center;
   }
 }

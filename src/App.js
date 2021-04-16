@@ -9,13 +9,12 @@ import SignInSignUp from './pages/sign-in-sign-up/SignInSignUp'
 import Checkout from './pages/checkout/Checkout'
 
 import Header from './components/header/Header'
+import {GlobalStyles} from './global.styles'
 
 
 import { selectCurrentUser } from './redux/user/user.selectors'
 import { checkUserSession } from './redux/user/userActions'
 // import { selectCollectionsForPreview } from './redux/shop/shop.selectors'
-
-import './App.css';
 
 const App = ({currentUser, checkUserSession}) => {
 
@@ -51,6 +50,7 @@ const App = ({currentUser, checkUserSession}) => {
 
   return (
     <div>
+      <GlobalStyles />
       <Header />
         <Switch>
         <Route exact path="/" component={Homepage} />

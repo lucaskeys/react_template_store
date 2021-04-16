@@ -55,7 +55,7 @@
 
     .title {
       font-weight: bold;
-      margin-bottom: 6px;
+      margin-top: 0px;
       font-size: 22px;
       color: #4a4a4a;
     }
@@ -63,6 +63,22 @@
     .subtitle {
       font-weight: lighter;
       font-size: 16px;
+    }
+  }
+
+  @media screen and (max-width: 800px) {
+    height: 200px;
+
+    &.large {
+      height: 200px;
+    }
+
+    .content {
+      padding: 0 18px;
+
+      .title {
+        font-size: 18px;
+      }
     }
   }
 }
