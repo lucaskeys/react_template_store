@@ -1,16 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
 
-import { selectCollectionIsFetching, selectCollectionIsLoaded } from '../../redux/shop/shop.selectors'
+// import { selectCollectionIsFetching, selectCollectionIsLoaded } from '../../redux/shop/shop.selectors'
+// import CollectionsOverview from '../../components/collections-overview/CollectionsOverview'
+// import CollectionPage from '../collection/Collection'
 import { fetchCollectionsStart } from '../../redux/shop/shopActions'
-
-
-import CollectionsOverview from '../../components/collections-overview/CollectionsOverview'
-import CollectionPage from '../collection/Collection'
-
 import CollectionsOverviewContainer from '../../components/collections-overview/CollectionsOverviewContainer'
 import CollectionPageContainer from '../../pages/collection/CollectionContainer'
 
@@ -20,25 +17,21 @@ import CollectionPageContainer from '../../pages/collection/CollectionContainer'
 // const CollectionsPageWithSpinner = WithSpinner(CollectionPage)
 
 
-class ShopPage extends React.Component {
+const ShopPage = ({fetchCollectionsStart, match}) => {
 
-  // }
-  componentDidMount() {
-    const { fetchCollectionsStartAsync } = this.props;
-    fetchCollectionsStartAsync();
-  }
+  useEffect(() => {
+    fetchCollectionsStart();
+    // we pass in fetchCollection - because it will render twice due to the parent component updating the user info - also we are pulling it in from mpaState, so this will not need to be re-rendered 
+  }, [fetchCollectionsStart])
 
-  render() {
-    const { match, isCollectionLoaded } = this.props;
-    console.log('route params start', match.path)
-    return(
-      <div className="shop-page">
 
-        <Route exact path={`${match.path}`} component={CollectionsOverviewContainer} />
-        <Route path={`${match.path}/:collectionId`} component={CollectionPageContainer} />
-      </div>
-    )
-  }
+  return(
+    <div className="shop-page">
+
+      <Route exact path={`${match.path}`} component={CollectionsOverviewContainer} />
+      <Route path={`${match.path}/:collectionId`} component={CollectionPageContainer} />
+    </div>
+  )
 }
 // Handled in our containers
 // const mapStateToProps = createStructuredSelector({
@@ -48,7 +41,7 @@ class ShopPage extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStart())
+    fetchCollectionsStart: () => dispatch(fetchCollectionsStart())
   }
 }
  

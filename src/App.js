@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
@@ -17,12 +17,13 @@ import { checkUserSession } from './redux/user/userActions'
 
 import './App.css';
 
-class App extends React.Component {
-  unsubscribeFromAuth = null;
+const App = ({currentUser, checkUserSession}) => {
 
-  componentDidMount() {
-    const { checkUserSession } = this.props;
-    checkUserSession();
+  useEffect(() => {
+    checkUserSession()
+  }, [checkUserSession])
+  // componentDidMount() {
+  //   checkUserSession();
     // const { collectionsArray } = this.props;
 
 
@@ -46,25 +47,19 @@ class App extends React.Component {
     //    // this is having to do with populating the firesotre but we only want to do this one time, so commenting out the code so it doesnt run again
     //   // addCollectionAndDocuments('collections', collectionsArray.map(({title, items}) => ({title, items})))
     // })
-  };
 
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
-  }
 
-  render() {
-    return (
-      <div>
-        <Header />
-          <Switch>
-          <Route exact path="/" component={Homepage} />
-          <Route path="/shop" component={ShopPage} />
-          <Route exact path="/checkout" component={Checkout} />
-          <Route exact path="/sign-in" render={() => this.props.currentUser ? (<Redirect to='/' />)  : (<SignInSignUp />)} />
-          </Switch>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <Header />
+        <Switch>
+        <Route exact path="/" component={Homepage} />
+        <Route path="/shop" component={ShopPage} />
+        <Route exact path="/checkout" component={Checkout} />
+        <Route exact path="/sign-in" render={() => currentUser ? (<Redirect to='/' />)  : (<SignInSignUp />)} />
+        </Switch>
+    </div>
+  );
 }
 
 const mapStateToProps = createStructuredSelector({

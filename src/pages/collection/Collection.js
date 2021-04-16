@@ -1,24 +1,42 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux'
 import CollectionItem from '../../components/collection-item/CollectionItem'
 import { selectCollection } from '../../redux/shop/shop.selectors'
 import './Collection.scss'
 
+import { firestore } from '../../firebase/FirebaseConfig'
+
 const CollectionPage = ({ collection }) => {
+
+  // useEffect(() => {
+
+  //     console.log('I am subscribing')
+  //     const unsubscribeFromCollections = firestore.collection('collection').onSnapshot(async snapshot => {
+  //       console.log(snapshot)
+  //     })
+  //     // this is called a cleanup function and will replicate componentWillUnmount() {}
+  //   return () => {
+  //     console.log('I am unsubscribing')
+  //     unsubscribeFromCollections()
+  //    }
+  //   }, [])
+
   const { title, items } = collection;
   console.log("collection Page props from route!", {collection})
 
   return(
+
     <div className="collection-page">
-    <h2 className="title">{ title }</h2>
-      <div className="items">
-        {
-          items.map(item => {
-            return <CollectionItem key={item.id} item={item} />
-          })
-        }
+      <h2 className="title">{ title }</h2>
+        <div className="items">
+          {
+            items.map(item => {
+              return <CollectionItem key={item.id} item={item} />
+            })
+          }
+        </div>
       </div>
-    </div>
+
   )
 }
 
