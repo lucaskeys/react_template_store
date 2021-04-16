@@ -15,5 +15,14 @@
     & .collection-item {
       margin-bottom: 30px;
     }
+
+    @media screen and (max-width: 800px) {
+      display: grid;
+      // fr is whatever space thats left in this screen
+      grid-template-columns: 1fr 1fr;
+      // spacing between elements
+      grid-gap: 15px;
+      align-items: center;
+    }
   }
 }
