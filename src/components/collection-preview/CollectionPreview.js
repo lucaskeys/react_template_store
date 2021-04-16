@@ -3,9 +3,7 @@ import CollectionItem from '../collection-item/CollectionItem'
 import { withRouter } from 'react-router-dom'
 import './CollectionPreview.scss'
 
-const CollectionPreview = ({title, items, match, routeName, history, id}) => {
-
-  console.log('CollectionsPreview other props HERE!',)
+const CollectionPreview = ({title, items, match, routeName, history}) => {
 
   const renderCollection = () => {
     // return items.filter((item, index) => index < 4).map(item => {
